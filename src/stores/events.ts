@@ -1,16 +1,16 @@
 import { writable } from 'svelte/store';
 import type { Discipline, DisciplineResponse } from '../types/discipline';
-import type { EventResponse } from '../types/event';
+import type { EventResponse, EventsResponse } from '../types/event';
 import type { Venue, VenueResponse } from '../types/venue';
 
-const events = writable<EventResponse | null>(null);
+const events = writable<EventsResponse | null>(null);
 const disciplines = writable<Discipline[]>([]);
 const venues = writable<Venue[]>([]);
 
 const fetchEvents = async (query: string) => {
     try {
         const response = await fetch(`https://apis.codante.io/olympic-games/events${query}`);
-        const data: EventResponse = await response.json();
+        const data: EventsResponse = await response.json();
         events.set(data);
     } catch (error) {
         console.error('Error fetching events:', error);
@@ -37,10 +37,10 @@ const fetchVenues = async () => {
     }
 };
 
-const fetchEventById = async (id: number) => {
+const fetchEventById = async (id: number): Promise<EventResponse> => {
     const response = await fetch(`https://apis.codante.io/olympic-games/events/${id}`)
     if (!response.ok) throw new Error('Network response was not ok');
-    const data: Event = await response.json();
+    const data: EventResponse = await response.json();
     return data;
 };
 

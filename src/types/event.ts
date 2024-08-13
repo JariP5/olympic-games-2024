@@ -19,9 +19,12 @@ interface Event {
     competitors: Competitor[];
 }
 
-  
-export interface EventResponse {
+export interface EventsResponse {
     data: Event[];
     links: PaginationLinks;
     meta: PaginationMeta;
+}
+
+export interface EventResponse {
+    data: Event;
 }

@@ -1,19 +1,19 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { events, fetchEvents, fetchDisciplines, fetchVenues, disciplines, venues } from '../../stores/events';
-    import type { EventResponse, Discipline, Venue } from '../../types';
+    import type { EventsResponse, Discipline, Venue } from '../../types';
 
     let currentPage = 1;
     let selectedDiscipline: string | null = null;
     let selectedVenue: string | null = null;
     let selectedDay: string | null = null;
 
-    let eventList: EventResponse | null = null;
+    let eventList: EventsResponse | null = null;
     let availableDisciplines: Discipline[] = [];
     let availableVenues: Venue[] = [];
 
-    const minDate = '2024-07-24'; // Start date of the allowed range
-    const maxDate = '2024-08-11'; // End date of the allowed range
+    const minDate = '2024-07-24'; // Start date of the olympics
+    const maxDate = '2024-08-11'; // End date of the olympics
 
     onMount(async () => {
         fetchEvents(`?page=${currentPage}`);

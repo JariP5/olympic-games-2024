@@ -1,33 +1,18 @@
 <script lang="ts">
+    import { formatDate } from './+page.ts';
+
     export let data: {
-        event: Event | null;
+        eventResponse: EventResponse | null;
         error: string | null;
     };
 
-    const { event, error } = data;
-    const eventData = event?.data;
+    const { eventResponse, error } = data;
+    const event = eventResponse?.data;
+    
+    const cleanedCompetitors = event?.competitors.filter((competitor) => competitor.country_id !== '' && competitor.competitor_name !== '');
+    const sortedCompetitors = cleanedCompetitors?.slice().sort((a, b) => a.position - b.position);
 
-    const formatDate = (dateString: string): string => {
-        try {
-            const date = new Date(dateString);
-            if (isNaN(date.getTime())) return '';
-
-            const options: Intl.DateTimeFormatOptions = {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false
-            };
-
-            return new Intl.DateTimeFormat('en-US', options).format(date);
-        } catch {
-            return '';
-        }
-    };
-
-    const isTwoCompetitors = eventData && eventData.competitors.length === 2;
+    const isTwoCompetitors = cleanedCompetitors && cleanedCompetitors.length === 2;
 
     const getMedalIcon = (position: number): string => {
         switch (position) {
@@ -42,25 +27,24 @@
         }
     };
 
-    const sortedCompetitors = eventData?.competitors.slice().sort((a, b) => a.position - b.position);
 </script>
 
 <section class="event-details">
-    {#if eventData}
+    {#if event}
         <div class="event-info">
-            <img src={eventData.discipline_pictogram} alt="Discipline Pictogram" class="discipline-icon" />
-            <h1>{eventData.discipline_name}</h1>
-            <h2> {eventData.event_name}</h2>
-            <p><strong>Date:</strong> {formatDate(eventData.start_date)} - {formatDate(eventData.end_date)}</p>
-            <p><strong>Venue:</strong> {eventData.venue_name}</p>
-            {#if eventData.is_medal_event}
+            <img src={event.discipline_pictogram} alt="Discipline Pictogram" class="discipline-icon" />
+            <h1>{event.discipline_name}</h1>
+            <h2> {event.event_name}</h2>
+            <p><strong>Date:</strong> {formatDate(event.start_date)} - {formatDate(event.end_date)}</p>
+            <p><strong>Venue:</strong> {event.venue_name}</p>
+            {#if event.is_medal_event}
                 <p class="medal-event">🏅 Medal Event</p>
             {/if}
         </div>
 
         {#if isTwoCompetitors}
             <div class="two-competitors">
-                {#each eventData.competitors as competitor}
+                {#each cleanedCompetitors as competitor}
                     <div class="competitor {competitor.result_winnerLoserTie === 'W' ? 'winner' : competitor.result_winnerLoserTie === 'T' ? 'tie' : 'loser'}">
                         <img src={competitor.country_flag_url} alt={competitor.country_id} class="country-flag" />
                         <p>{competitor.competitor_name}</p>
@@ -161,11 +145,6 @@
         border-color: #808080;
         background-color: #d3d3d3;
         width: 35%;
-    }
-
-    .medal-icon {
-        height: 20px;
-        margin-left: 0.5rem;
     }
 
     .error {

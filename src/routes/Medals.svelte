@@ -10,15 +10,15 @@
 
     let medals: CountryMedals[] = [];
     let error: string | null = null;
-    const sortByTotal = writable(false);  // Toggle between rank and total medals
+    const sortByTotal = writable(false);
 
     onMount(async () => {
         try {
-        const response: CountryMedalsResponse = await fetchMedals();
-        medals = response.data.sort((a, b) => a.rank - b.rank);
+            const response: CountryMedalsResponse = await fetchMedals();
+            medals = response.data.sort((a, b) => a.rank - b.rank);
         } catch (err) {
-        error = 'Failed to load medals. Please try again later.';
-        console.error('Error fetching medals:', err);
+            error = 'Failed to load medals. Please try again later.';
+            console.error('Error fetching medals:', err);
         }
     });
 
@@ -32,11 +32,24 @@
 </script>
 
 <section>
-    <h1>{ $sortByTotal ? 'Countries Sorted by Total Medals Won' : 'Countries Sorted by Rank of Medals' }</h1>
-    <button on:click={toggleSorting}>
-        { $sortByTotal ? 'Sort by Rank' : 'Sort by Total' }
-    </button>
-    
+    <h1>Medals Table</h1>
+    <div class="sort-toggle">
+        <button 
+            class:active={!$sortByTotal} 
+            on:click={toggleSorting} 
+            disabled={!$sortByTotal}
+        >
+            Sort by Rank
+        </button>
+        <button 
+            class:active={$sortByTotal} 
+            on:click={toggleSorting} 
+            disabled={$sortByTotal}
+        >
+            Sort by Total
+        </button>
+    </div>
+        
     {#if error}
         <p class="error">{error}</p>
     {:else if sortedMedals.length}
@@ -45,18 +58,18 @@
                 <tr>
                     <th>Flag</th>
                     <th>Name</th>
-                <th>
-                    <img src={goldMedal} alt="Gold Medal" width="16" height="16" /> Gold
-                </th>
-                <th>
-                    <img src={silverMedal} alt="Silver Medal" width="16" height="16" /> Silver
-                </th>
-                <th>
-                    <img src={bronzeMedal} alt="Bronze Medal" width="16" height="16" /> Bronze
-                </th>
-                <th>
-                    <img src={allMedals} alt="All Medals" width="16" height="16" /> Total
-                </th>
+                    <th>
+                        <img src={goldMedal} alt="Gold Medal" width="16" height="16" /> Gold
+                    </th>
+                    <th>
+                        <img src={silverMedal} alt="Silver Medal" width="16" height="16" /> Silver
+                    </th>
+                    <th>
+                        <img src={bronzeMedal} alt="Bronze Medal" width="16" height="16" /> Bronze
+                    </th>
+                    <th>
+                        <img src={allMedals} alt="All Medals" width="16" height="16" /> Total
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -98,24 +111,38 @@
     }
     th, img {
         vertical-align: middle;
-        }
+    }
     tr:hover {
         background-color: #f5f5f5;
     }
     td.center {
         text-align: center;
     }
-    button {
+    .sort-toggle {
+        display: flex;
         margin-bottom: 20px;
+    }
+    .sort-toggle button {
         padding: 10px 15px;
         font-size: 1rem;
         cursor: pointer;
         background-color: #007BFF;
         color: white;
-        border: none;
+        border: 2px solid transparent;
         border-radius: 5px;
+        flex: 1;
+        text-align: center;
+        transition: background-color 0.3s, border-color 0.3s;
     }
-    button:hover {
+    .sort-toggle button:not(:last-child) {
+        margin-right: 10px;
+    }
+    .sort-toggle button.active {
+        background-color: #0056b3;
+        border-color: #ffcc00;
+        cursor: not-allowed;
+    }
+    .sort-toggle button:hover:not(:disabled) {
         background-color: #0056b3;
     }
 </style>
