@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, screen } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
 import EventDetails from '../../../../routes/events/[id]/+page.svelte';
