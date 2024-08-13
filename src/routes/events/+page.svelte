@@ -15,18 +15,13 @@
     const minDate = '2024-07-24'; // Start date of the allowed range
     const maxDate = '2024-08-11'; // End date of the allowed range
 
-    let isTransitioning = false; // To control the transition state
-    let transitionDirection: 'left' | 'right' = 'left'; // Track the transition direction
-
     onMount(async () => {
         fetchEvents(`?page=${currentPage}`);
         fetchDisciplines();
         fetchVenues();
-
+        
         const unsubscribeEvents = events.subscribe(data => {
-            if (!isTransitioning) {
-                eventList = data;
-            }
+            eventList = data;
         });
         const unsubscribeDisciplines = disciplines.subscribe(data => {
             availableDisciplines = data;
@@ -51,19 +46,8 @@
     }
 
     function goToPage(page: number) {
-        if (page === currentPage) return; // Avoid unnecessary transitions
-
-        // Determine transition direction
-        transitionDirection = page > currentPage ? 'right' : 'left';
-
-        isTransitioning = true; // Start the transition
-
-        // Delay the transition effect to complete before updating the page
-        setTimeout(() => {
-            currentPage = page;
-            applyFilters();
-            isTransitioning = false;
-        }, 600); // Match the duration of your CSS transition
+        currentPage = page;
+        applyFilters();
     }
 
     function handleDisciplineChange(event: Event) {
@@ -87,7 +71,9 @@
     const formatDate = (dateString: string): string => {
         try {
             const date = new Date(dateString);
-            if (isNaN(date.getTime())) return '';
+            if (isNaN(date.getTime())) {
+                return '';
+            }
             const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
             return new Intl.DateTimeFormat('en-US', options).format(date);
         } catch (error) {
@@ -116,7 +102,7 @@
         <select id="venue" on:change={handleVenueChange}>
             <option value="">All Venues</option>
             {#each availableVenues as venue}
-                <option value={venue.name}>
+                <option value={venue.id}>
                     {venue.name}
                 </option>
             {/each}
@@ -126,49 +112,47 @@
         <input type="date" id="day" min={minDate} max={maxDate} on:change={handleDayChange} />
     </div>
 
-    <div class="events-table-container">
-        {#if eventList}
-            <div class="events-table-wrapper {isTransitioning ? transitionDirection : ''}">
-                <table class="events-table">
-                    <thead>
-                        <tr>
-                            <th>Discipline</th>
-                            <th>Event Name</th>
-                            <th>Date</th>
-                            <th>Venue</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {#each eventList.data as event}
-                            <tr>
-                                <td>{event.discipline_name}</td>
-                                <td>
-                                    {event.event_name}
-                                    {#if event.is_medal_event}
-                                        <span class="medal">🏅</span>
-                                    {/if}
-                                </td>
-                                <td>{formatDate(event.day)}</td>
-                                <td>{event.venue_name}</td>
-                                <td>
-                                    <a href={`/events/${event.id}`} class="details-button">Details</a>
-                                </td>
-                            </tr>
-                        {/each}
-                    </tbody>
-                </table>
-            </div>
+    {#if eventList}
+        <table class="events-table">
+        <thead>
+            <tr>
+                <th>Discipline</th>
+                <th>Event Name</th>
+                <th>Date</th>
+                <th>Venue</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {#each eventList.data as event}
+                <tr>
+                    <td>
+                        {event.discipline_name}
+                    </td>
+                    <td>
+                        {#if event.is_medal_event}
+                            <span class="medal">🏅</span>
+                        {/if}
+                        {event.event_name}
+                    </td>
+                    <td>{formatDate(event.day)}</td>
+                    <td>{event.venue_name}</td>
+                    <td>
+                        <a href={`/events/${event.id}`} class="details-button">Details</a>
+                    </td>
+                </tr>
+            {/each}
+        </tbody>
+        </table>
 
-            <div class="pagination">
-                <button disabled={eventList.meta.current_page === 1} on:click={() => goToPage(eventList.meta.current_page - 1)}>Previous</button>
-                <span>Page {eventList.meta.current_page} of {eventList.meta.last_page}</span>
-                <button disabled={eventList.meta.current_page === eventList.meta.last_page} on:click={() => goToPage(eventList.meta.current_page + 1)}>Next</button>
-            </div>
-        {:else}
-            <p>Loading events...</p>
-        {/if}
-    </div>
+        <div class="pagination">
+            <button disabled={eventList.meta.current_page === 1} on:click={() => goToPage(eventList.meta.current_page - 1)}>Previous</button>
+            <span>Page {eventList.meta.current_page} of {eventList.meta.last_page}</span>
+            <button disabled={eventList.meta.current_page === eventList.meta.last_page} on:click={() => goToPage(eventList.meta.current_page + 1)}>Next</button>
+        </div>
+    {:else}
+        <p>Loading events...</p>
+    {/if}
 </section>
 
 <style>
@@ -195,38 +179,13 @@
     }
 
     .medal {
-        margin-left: 8px;
-        color: gold;
         font-size: 1.2rem;
-    }
-
-    .events-table-wrapper {
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        height: auto; /* Adjust as needed */
     }
 
     .events-table {
         width: 100%;
         border-collapse: collapse;
-        transition: transform 0.6s ease;
-    }
-
-    .slide-left {
-        transform: translateX(-100%);
-    }
-
-    .slide-right {
-        transform: translateX(100%);
-    }
-
-    .events-table-wrapper.slide-left .events-table {
-        transform: translateX(100%);
-    }
-
-    .events-table-wrapper.slide-right .events-table {
-        transform: translateX(-100%);
+        margin-bottom: 1rem;
     }
 
     .events-table th,
