@@ -1,9 +1,12 @@
 <script>
 	import { page } from '$app/stores';
+	import paris2024 from '../assets/paris2024.png';
 </script>
 
 <header>
-
+	<div class="logo">
+		<img src={paris2024} alt="Paris 2024 Logo" /> 
+	</div>
 	<nav>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
@@ -25,12 +28,27 @@
 <style>
 	header {
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
 	}
 
+	.logo {
+		position: absolute;
+		left: 0;
+		top: 0;
+		padding: 2em;
+	}
+
+	.logo img {
+		width: 150px;
+		height: auto;
+	}
+
 	nav {
+		flex-grow: 1;
 		display: flex;
 		justify-content: center;
+		align-items: center;
 		--background: rgba(255, 255, 255, 0.7);
 	}
 
