@@ -1,5 +1,5 @@
 <script>
-  	import Medals from './Medals.svelte';
+	import Medals from './Medals.svelte';
 </script>
 
 <svelte:head>

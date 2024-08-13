@@ -117,7 +117,7 @@
         <thead>
             <tr>
                 <th>Discipline</th>
-                <th>Event Name</th>
+                <th>Competitors</th>
                 <th>Date</th>
                 <th>Venue</th>
                 <th></th>
