@@ -6,10 +6,14 @@
     let currentPage = 1;
     let selectedDiscipline: string | null = null;
     let selectedVenue: string | null = null;
+    let selectedDay: string | null = null;
 
     let eventList: EventResponse | null = null;
     let availableDisciplines: Discipline[] = [];
     let availableVenues: Venue[] = [];
+
+    const minDate = '2024-07-24'; // Start date of the allowed range
+    const maxDate = '2024-08-11'; // End date of the allowed range
 
     onMount(async () => {
         fetchEvents(`?page=${currentPage}`);
@@ -27,9 +31,9 @@
         });
 
         return () => {
-        unsubscribeEvents();
-        unsubscribeDisciplines();
-        unsubscribeVenues();
+            unsubscribeEvents();
+            unsubscribeDisciplines();
+            unsubscribeVenues();
         };
     });
 
@@ -37,6 +41,7 @@
         let query = `?page=${currentPage}`;
         if (selectedDiscipline) query += `&discipline=${selectedDiscipline}`;
         if (selectedVenue) query += `&venue=${selectedVenue}`;
+        if (selectedDay) query += `&date=${selectedDay}`;
         fetchEvents(query);
     }
 
@@ -48,14 +53,18 @@
     function handleDisciplineChange(event: Event) {
         currentPage = 1;
         selectedDiscipline = (event.target as HTMLSelectElement).value;
-        console.log(selectedDiscipline);
-        console.log("Here");
         applyFilters();
     }
 
     function handleVenueChange(event: Event) {
         currentPage = 1;
         selectedVenue = (event.target as HTMLSelectElement).value;
+        applyFilters();
+    }
+
+    function handleDayChange(event: Event) {
+        currentPage = 1;
+        selectedDay = (event.target as HTMLInputElement).value;
         applyFilters();
     }
 
@@ -75,14 +84,17 @@
 </script>
 
 <section class="events-section">
-  <h1>Events</h1>
-  
+    <h1>Events</h1>
+
     <div class="filters">
         <label for="discipline">Discipline:</label>
         <select id="discipline" on:change={handleDisciplineChange}>
             <option value="">All Disciplines</option>
             {#each availableDisciplines as discipline}
-                <option value={discipline.id}>{discipline.name}</option>
+                <option value={discipline.id}>
+                    <img src={discipline.pictogram_url} alt="{discipline.name} icon" class="pictogram" />
+                    {discipline.name}
+                </option>
             {/each}
         </select>
 
@@ -90,9 +102,14 @@
         <select id="venue" on:change={handleVenueChange}>
             <option value="">All Venues</option>
             {#each availableVenues as venue}
-                <option value={venue.name}>{venue.name}</option>
+                <option value={venue.name}>
+                    {venue.name}
+                </option>
             {/each}
         </select>
+
+        <label for="day">Day:</label>
+        <input type="date" id="day" min={minDate} max={maxDate} on:change={handleDayChange} />
     </div>
 
     {#if eventList}
@@ -109,11 +126,20 @@
         <tbody>
             {#each eventList.data as event}
                 <tr>
-                    <td>{event.discipline_name}</td>
-                    <td>{event.event_name}</td>
+                    <td>
+                        {event.discipline_name}
+                    </td>
+                    <td>
+                        {event.event_name}
+                        {#if event.is_medal_event}
+                            <span class="medal">🏅</span>
+                        {/if}
+                    </td>
                     <td>{formatDate(event.day)}</td>
                     <td>{event.venue_name}</td>
-                    <td><a href={`/events/${event.id}`}>See More</td>
+                    <td>
+                        <a href={`/events/${event.id}`} class="details-button">Details</a>
+                    </td>
                 </tr>
             {/each}
         </tbody>
@@ -152,6 +178,12 @@
         border-radius: 4px;
     }
 
+    .medal {
+        margin-left: 8px;
+        color: gold;
+        font-size: 1.2rem;
+    }
+
     .events-table {
         width: 100%;
         border-collapse: collapse;
@@ -167,6 +199,20 @@
 
     .events-table th {
         background-color: #f4f4f4;
+    }
+
+    .details-button {
+        padding: 0.5rem 1rem;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .details-button:hover {
+        background-color: #0056b3;
     }
 
     .pagination {
