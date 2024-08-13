@@ -1,4 +1,3 @@
-// src/stores/events.ts
 import { writable } from 'svelte/store';
 import type { Discipline, DisciplineResponse } from '../types/discipline';
 import type { EventResponse } from '../types/event';
@@ -39,16 +38,11 @@ const fetchVenues = async () => {
 };
 
 const fetchEventById = async (id: number) => {
-    try {
-        const response = await fetch(`https://apis.codante.io/olympic-games/events/${id}`)
-        if (!response.ok) throw new Error('Network response was not ok');
-        const data: Event = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching event by ID:', error);
-        throw error;
-    }
-  };
+    const response = await fetch(`https://apis.codante.io/olympic-games/events/${id}`)
+    if (!response.ok) throw new Error('Network response was not ok');
+    const data: Event = await response.json();
+    return data;
+};
 
 export { disciplines, events, fetchDisciplines, fetchEventById, fetchEvents, fetchVenues, venues };
 

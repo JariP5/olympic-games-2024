@@ -1,5 +1,5 @@
 export interface Competitor {
-    country_id: string; // Country name in local language
+    country_id: string; // Country name in Portugese
     country_flag_url: string;
     competitor_name: string;
     position: number; // 0-based index; 0 = 1st place if competitors > 2, 0 = 2nd place if competitors = 2
