@@ -61,7 +61,7 @@
         {#if isTwoCompetitors}
             <div class="two-competitors">
                 {#each eventData.competitors as competitor}
-                    <div class="competitor {competitor.result_winnerLoserTie === 'W' ? 'winner' : 'loser'}">
+                    <div class="competitor {competitor.result_winnerLoserTie === 'W' ? 'winner' : competitor.result_winnerLoserTie === 'T' ? 'tie' : 'loser'}">
                         <img src={competitor.country_flag_url} alt={competitor.country_id} class="country-flag" />
                         <p>{competitor.competitor_name}</p>
                         <p>{competitor.result_mark}</p>
@@ -154,6 +154,12 @@
     .competitor.loser {
         border-color: #dc3545;
         background-color: #ffe9e9;
+        width: 35%;
+    }
+
+    .competitor.tie {
+        border-color: #808080;
+        background-color: #d3d3d3;
         width: 35%;
     }
 
