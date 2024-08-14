@@ -1,38 +1,45 @@
-# create-svelte
+Paris 2024 Olympics Data Display
+Purpose
+This project is designed to display comprehensive data for the 2024 Paris Olympics, providing users with the following features:
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Medals Table: View the medals table, sorted by rank or total number of medals.
+Event Listings: Browse all Olympic events with the ability to filter by date, discipline, or venue.
+Event Details: Access detailed information about each event, including participant names and their respective scores.
+Requirements
+Node.js: Ensure you have Node.js version 20 or higher installed on your system.
+Installation
+To install the necessary dependencies, run:
 
-## Creating a project
+bash
+Copy code
+npm install
+Developing
+To start the development server and see the app in your browser, run:
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
+bash
+Copy code
 npm run dev
+This will open a local server where you can view and develop the project in real-time.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+Testing
+To run the test suites and ensure your code is functioning correctly, execute:
 
-## Building
+bash
+Copy code
+npm test
+This will run all the tests defined for the project, allowing you to verify the application's functionality.
 
-To create a production version of your app:
+Building
+To create a production-ready version of the application, use the following command:
 
-```bash
+bash
+Copy code
 npm run build
-```
+This command will generate a minimized, optimized version of your app in the dist directory.
 
-You can preview the production build with `npm run preview`.
+You can preview the production build locally by running:
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+bash
+Copy code
+npm run preview
+This will serve the production build on a local server, allowing you to test the final output.
