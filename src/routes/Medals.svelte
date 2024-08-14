@@ -59,16 +59,24 @@
                     <th>Flag</th>
                     <th>Name</th>
                     <th>
-                        <img src={goldMedal} alt="Gold Medal" width="16" height="16" /> Gold
+                        <div class="centered-content">
+                            <img src={goldMedal} alt="Gold Medal" width="16" height="16" /> Gold
+                        </div>
                     </th>
                     <th>
-                        <img src={silverMedal} alt="Silver Medal" width="16" height="16" /> Silver
+                        <div class="centered-content">
+                            <img src={silverMedal} alt="Silver Medal" width="16" height="16" /> Silver
+                        </div>
                     </th>
                     <th>
-                        <img src={bronzeMedal} alt="Bronze Medal" width="16" height="16" /> Bronze
+                        <div class="centered-content">
+                            <img src={bronzeMedal} alt="Bronze Medal" width="16" height="16" /> Bronze
+                        </div>
                     </th>
                     <th>
-                        <img src={allMedals} alt="All Medals" width="16" height="16" /> Total
+                        <div class="centered-content">
+                            <img src={allMedals} alt="All Medals" width="16" height="16" /> Total
+                        </div>
                     </th>
                 </tr>
             </thead>
@@ -91,14 +99,23 @@
 </section>
 
 <style>
+    .centered-content {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+    }
+    .centered-content img {
+        margin-right: 4px;
+    }
     .error {
         color: red;
         font-weight: bold;
     }
     table {
-        width: 100%;
-        border-collapse: collapse;
         margin: 20px 0;
+        border-collapse: collapse;
         font-size: 1rem;
         text-align: left;
     }
@@ -120,7 +137,10 @@
     }
     .sort-toggle {
         display: flex;
+        justify-content: center; /* Center the buttons */
         margin-bottom: 20px;
+        width: 300px; /* Set a fixed width to prevent movement */
+        margin: 0 auto 20px auto; /* Center the toggle div itself */
     }
     .sort-toggle button {
         padding: 10px 15px;

@@ -197,5 +197,4 @@ describe('EventDetails', () => {
     expect(screen.queryByText('Ghost Rider')).toBeNull();
   });
   
-  
 });
