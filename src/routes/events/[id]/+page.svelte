@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { formatDate } from './+page.ts';
+    import { formatDate } from '../../../helper/date.ts';
 
     export let data: {
         eventResponse: EventResponse | null;
@@ -9,7 +9,10 @@
     const { eventResponse, error } = data;
     const event = eventResponse?.data;
     
-    const cleanedCompetitors = event?.competitors.filter((competitor) => competitor.country_id !== '' && competitor.competitor_name !== '');
+    const cleanedCompetitors = event?.competitors.filter((competitor) => {
+        return competitor.country_id !== '' && 
+               competitor.competitor_name !== '';
+    });
     const sortedCompetitors = cleanedCompetitors?.slice().sort((a, b) => a.position - b.position);
 
     const isTwoCompetitors = cleanedCompetitors && cleanedCompetitors.length === 2;

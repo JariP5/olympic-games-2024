@@ -42,6 +42,7 @@
 	.logo img {
 		width: 150px;
 		height: auto;
+		max-width: 100%;
 	}
 
 	nav {
@@ -109,4 +110,15 @@
 	a:hover {
 		color: var(--color-theme-1);
 	}
+
+	@media (max-width: 1000px) {
+		.logo {
+			padding: 1rem
+		}
+		.logo img {
+			width: 100px;
+		}
+	}
+
 </style>
+

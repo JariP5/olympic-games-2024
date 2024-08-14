@@ -49,53 +49,56 @@
             Sort by Total
         </button>
     </div>
-        
-    {#if error}
-        <p class="error">{error}</p>
-    {:else if sortedMedals.length}
-        <table>
-            <thead>
-                <tr>
-                    <th>Flag</th>
-                    <th>Name</th>
-                    <th>
-                        <div class="centered-content">
-                            <img src={goldMedal} alt="Gold Medal" width="16" height="16" /> Gold
-                        </div>
-                    </th>
-                    <th>
-                        <div class="centered-content">
-                            <img src={silverMedal} alt="Silver Medal" width="16" height="16" /> Silver
-                        </div>
-                    </th>
-                    <th>
-                        <div class="centered-content">
-                            <img src={bronzeMedal} alt="Bronze Medal" width="16" height="16" /> Bronze
-                        </div>
-                    </th>
-                    <th>
-                        <div class="centered-content">
-                            <img src={allMedals} alt="All Medals" width="16" height="16" /> Total
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each sortedMedals as medal}
-                <tr>
-                    <td><img src={medal.flag_url} alt={medal.name} width="32" /></td>
-                    <td>{medal.name}</td>
-                    <td class="center">{medal.gold_medals}</td>
-                    <td class="center">{medal.silver_medals}</td>
-                    <td class="center">{medal.bronze_medals}</td>
-                    <td class="center">{medal.total_medals}</td>
-                </tr>
-                {/each}
-            </tbody>
-        </table>
-    {:else}
-        <p>Loading medals...</p>
-    {/if}
+
+    <!-- Wrapper with a minimum height to keep the space stable -->
+    <div class="content-area">
+        {#if error}
+            <p class="error">{error}</p>
+        {:else if sortedMedals.length}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Flag</th>
+                        <th>Name</th>
+                        <th>
+                            <div class="centered-content">
+                                <img src={goldMedal} alt="Gold Medal" width="16" height="16" /> Gold
+                            </div>
+                        </th>
+                        <th>
+                            <div class="centered-content">
+                                <img src={silverMedal} alt="Silver Medal" width="16" height="16" /> Silver
+                            </div>
+                        </th>
+                        <th>
+                            <div class="centered-content">
+                                <img src={bronzeMedal} alt="Bronze Medal" width="16" height="16" /> Bronze
+                            </div>
+                        </th>
+                        <th>
+                            <div class="centered-content">
+                                <img src={allMedals} alt="All Medals" width="16" height="16" /> Total
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each sortedMedals as medal}
+                    <tr>
+                        <td><img src={medal.flag_url} alt={medal.name} width="32" /></td>
+                        <td>{medal.name}</td>
+                        <td class="center">{medal.gold_medals}</td>
+                        <td class="center">{medal.silver_medals}</td>
+                        <td class="center">{medal.bronze_medals}</td>
+                        <td class="center">{medal.total_medals}</td>
+                    </tr>
+                    {/each}
+                </tbody>
+            </table>
+        {:else}
+            <p>Loading medals...</p>
+        {/if}
+    </div>
 </section>
 
 <style>
@@ -106,42 +109,53 @@
         text-align: center;
         width: 100%;
     }
+
     .centered-content img {
         margin-right: 4px;
     }
+
     .error {
         color: red;
         font-weight: bold;
     }
+
     table {
         margin: 20px 0;
         border-collapse: collapse;
         font-size: 1rem;
         text-align: left;
+        width: 100%;
     }
+
     th, td {
         padding: 12px;
         border-bottom: 1px solid #ddd;
     }
+
     th {
         background-color: #f2f2f2;
     }
+
     th, img {
         vertical-align: middle;
     }
+
     tr:hover {
         background-color: #f5f5f5;
     }
+
     td.center {
         text-align: center;
     }
+
     .sort-toggle {
         display: flex;
-        justify-content: center; /* Center the buttons */
+        justify-content: center;
         margin-bottom: 20px;
-        width: 300px; /* Set a fixed width to prevent movement */
-        margin: 0 auto 20px auto; /* Center the toggle div itself */
+        width: 300px;
+        margin: 0 auto 20px auto; 
     }
+
     .sort-toggle button {
         padding: 10px 15px;
         font-size: 1rem;
@@ -154,15 +168,26 @@
         text-align: center;
         transition: background-color 0.3s, border-color 0.3s;
     }
+
     .sort-toggle button:not(:last-child) {
         margin-right: 10px;
     }
+
     .sort-toggle button.active {
         background-color: #0056b3;
         border-color: #ffcc00;
         cursor: not-allowed;
     }
+
     .sort-toggle button:hover:not(:disabled) {
         background-color: #0056b3;
+    }
+
+    .content-area {
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
 </style>

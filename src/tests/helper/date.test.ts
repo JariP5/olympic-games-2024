@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { formatDate } from '../../../../routes/events/[id]/+page';
-  
+import { formatDate } from '../../helper/date';
+
 describe('formatDate', () => {
     it('formats a valid date string correctly', () => {
       const dateString = '2024-08-01T10:00:00Z';

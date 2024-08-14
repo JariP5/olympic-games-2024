@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { events, fetchEvents, fetchDisciplines, fetchVenues, disciplines, venues } from '../../stores/events';
+    import { formatDate } from '../../helper/date.ts';
     import type { EventsResponse, Discipline, Venue } from '../../types';
 
     let currentPage = 1;
@@ -67,20 +68,6 @@
         selectedDay = (event.target as HTMLInputElement).value;
         applyFilters();
     }
-
-    const formatDate = (dateString: string): string => {
-        try {
-            const date = new Date(dateString);
-            if (isNaN(date.getTime())) {
-                return '';
-            }
-            const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-            return new Intl.DateTimeFormat('en-US', options).format(date);
-        } catch (error) {
-            console.error('Error formatting date:', error);
-            return ''; 
-        }
-    };
 </script>
 
 <section class="events-section">
@@ -165,6 +152,10 @@
 
     .filters {
         margin-bottom: 1rem;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        align-items: center;
     }
 
     .filters label {
@@ -176,6 +167,7 @@
         padding: 0.5rem;
         border: 1px solid #ccc;
         border-radius: 4px;
+        width: 150px;
     }
 
     .medal {
@@ -186,6 +178,7 @@
         width: 100%;
         border-collapse: collapse;
         margin-bottom: 1rem;
+        min-width: 65vw;
     }
 
     .events-table th,
@@ -193,6 +186,10 @@
         padding: 0.75rem;
         text-align: center;
         border-bottom: 1px solid #ddd;
+    }
+
+    .events-table td:last-child {
+        text-align: right;
     }
 
     .events-table th {
