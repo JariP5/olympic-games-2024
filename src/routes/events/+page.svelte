@@ -3,11 +3,12 @@
     import { events, fetchEvents, fetchDisciplines, fetchVenues, disciplines, venues } from '../../stores/events';
     import { formatDate } from '../../helper/date.ts';
     import type { EventsResponse, Discipline, Venue } from '../../types';
+    import { filterStore, setPage, setDiscipline, setVenue, setDay } from '../../stores/filters.ts';
 
-    let currentPage = 1;
-    let selectedDiscipline: string | null = null;
-    let selectedVenue: string | null = null;
-    let selectedDay: string | null = null;
+    let currentPage: number;
+    let selectedDiscipline: string | null;
+    let selectedVenue: string | null;
+    let selectedDay: string | null;
 
     let eventList: EventsResponse | null = null;
     let availableDisciplines: Discipline[] = [];
@@ -15,6 +16,14 @@
 
     const minDate = '2024-07-24'; // Start date of the olympics
     const maxDate = '2024-08-11'; // End date of the olympics
+
+    // Subscribe to the filter store to keep local variables in sync
+    const unsubscribeFilterStore = filterStore.subscribe(state => {
+        currentPage = state.currentPage;
+        selectedDiscipline = state.selectedDiscipline;
+        selectedVenue = state.selectedVenue;
+        selectedDay = state.selectedDay;
+    });
 
     onMount(async () => {
         fetchEvents(`?page=${currentPage}`);
@@ -35,6 +44,7 @@
             unsubscribeEvents();
             unsubscribeDisciplines();
             unsubscribeVenues();
+            unsubscribeFilterStore();
         };
     });
 
@@ -47,25 +57,25 @@
     }
 
     function goToPage(page: number) {
-        currentPage = page;
+        setPage(page);
         applyFilters();
     }
 
     function handleDisciplineChange(event: Event) {
-        currentPage = 1;
-        selectedDiscipline = (event.target as HTMLSelectElement).value;
+        setPage(1);
+        setDiscipline((event.target as HTMLSelectElement).value);
         applyFilters();
     }
 
     function handleVenueChange(event: Event) {
-        currentPage = 1;
-        selectedVenue = (event.target as HTMLSelectElement).value;
+        setPage(1);
+        setVenue((event.target as HTMLSelectElement).value);
         applyFilters();
     }
 
     function handleDayChange(event: Event) {
-        currentPage = 1;
-        selectedDay = (event.target as HTMLInputElement).value;
+        setPage(1);
+        setDay((event.target as HTMLInputElement).value);
         applyFilters();
     }
 </script>
@@ -75,8 +85,8 @@
 
     <div class="filters">
         <label for="discipline">Discipline:</label>
-        <select id="discipline" on:change={handleDisciplineChange}>
-            <option value="">All Disciplines</option>
+        <select id="discipline" on:change={handleDisciplineChange} bind:value={selectedDiscipline}>
+            <option value={null || ''}>All Disciplines</option>
             {#each availableDisciplines as discipline}
                 <option value={discipline.id}>
                     <img src={discipline.pictogram_url} alt="{discipline.name} icon" class="pictogram" />
@@ -86,8 +96,8 @@
         </select>
 
         <label for="venue">Venue:</label>
-        <select id="venue" on:change={handleVenueChange}>
-            <option value="">All Venues</option>
+        <select id="venue" on:change={handleVenueChange} bind:value={selectedVenue}>
+            <option value={null || ''}>All Venues</option>
             {#each availableVenues as venue}
                 <option value={venue.id}>
                     {venue.name}
@@ -96,7 +106,7 @@
         </select>
 
         <label for="day">Day:</label>
-        <input type="date" id="day" min={minDate} max={maxDate} on:change={handleDayChange} />
+        <input type="date" id="day" min={minDate} max={maxDate} on:change={handleDayChange} bind:value={selectedDay} />
     </div>
 
     {#if eventList}
