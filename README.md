@@ -2,13 +2,11 @@
 
 ## Purpose
 
-This project is designed to display comprehensive data for the 2024 Paris Olympics, providing users with the following features:
+This Svelte project is designed to display comprehensive data for the 2024 Paris Olympics, providing users with the following features:
 
 1. **Medals Table**: View the medals table, sorted by rank or total number of medals.
 2. **Event Listings**: Browse all Olympic events with the ability to filter by date, discipline, or venue.
 3. **Event Details**: Access detailed information about each event, including participant names and their respective scores.
-
-*Made with Svelte
 
 ## Requirements
 
@@ -40,7 +38,7 @@ npm test
 ```
 This will run all the tests defined for the project, allowing you to verify the application's functionality.
 
-Building
+## Building
 To create a production-ready version of the application, use the following command:
 
 ```bash
