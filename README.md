@@ -8,6 +8,9 @@ This Svelte project is designed to display comprehensive data for the 2024 Paris
 2. **Event Listings**: Browse all Olympic events with the ability to filter by date, discipline, or venue.
 3. **Event Details**: Access detailed information about each event, including participant names and their respective scores.
 
+## API Provider
+The data is sourced from the Codante API, specifically the English version. However, the API has an issue where country names are returned in Portuguese rather than English. Apart from that it works well. More details can be found in the documentation: https://docs.apis.codante.io/olympic-games-english.
+
 ## Requirements
 
 - **Node.js**: Ensure you have Node.js version 20 or higher installed on your system.
