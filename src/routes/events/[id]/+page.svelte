@@ -38,7 +38,7 @@
             <img src={event.discipline_pictogram} alt="Discipline Pictogram" class="discipline-icon" />
             <h1>{event.discipline_name}</h1>
             <h2> {event.event_name}</h2>
-            <p><strong>Date:</strong> {formatDate(event.start_date)} - {formatDate(event.end_date)}</p>
+            <p><strong>Date:</strong> {formatDate(event.start_date, true)} - {formatDate(event.end_date, true)}</p>
             <p><strong>Venue:</strong> {event.venue_name}</p>
             {#if event.is_medal_event}
                 <p class="medal-event">🏅 Medal Event</p>

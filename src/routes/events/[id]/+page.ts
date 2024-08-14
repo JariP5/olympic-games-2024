@@ -25,5 +25,3 @@ export const load: PageLoad = async ({ params }): Promise<{eventResponse: EventR
     };
   }
 };
-
-

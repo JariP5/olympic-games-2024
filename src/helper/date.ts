@@ -1,4 +1,4 @@
-export const formatDate = (dateString: string): string => {
+export const formatDate = (dateString: string, showTime?: boolean): string => {
     try {
         const date = new Date(dateString);
         if (isNaN(date.getTime())) return '';
@@ -7,8 +7,8 @@ export const formatDate = (dateString: string): string => {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
+            hour: showTime ? '2-digit' : undefined,
+            minute: showTime ? '2-digit' : undefined,
             hour12: false,
             timeZone: 'UTC'
         };
